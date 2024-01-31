@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sw": "next-offline sw"
   },
   "dependencies": {
     "next": "14.1.0",
     "next-offline": "^5.0.5",
+    "next-pwa": "^5.6.0",
     "react": "^18",
     "react-dom": "^18",
     "react-select": "^5.8.0"

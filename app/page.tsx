@@ -25,9 +25,14 @@ export default function Home() {
     setSelectedItem(options[0]);
   }, [])
   const calculate = () => {
-    const out = selectedItem?.value? input * 9 / 5 + 32 : (input - 32) * 5 / 9;
-    setOutput(out);
-  }
+    if (selectedItem?.value) {
+      const out = (input * 9) / 5 + 32; // Celsius to Fahrenheit
+      setOutput(out);
+    } else {
+      const out = ((input - 32) * 5) / 9; // Fahrenheit to Celsius
+      setOutput(out);
+    }
+  };
   const handleCalculate = (item: Option | null) => {
     setSelectedItem(item);
     calculate();

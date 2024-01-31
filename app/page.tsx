@@ -1,19 +1,38 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
+interface Option {
+  value: boolean;
+  label: string;
+}
 export default function Home() {
   const [input, setInput] = useState(0);
   const [output, setOutput] = useState(0);
-  const options = [
+  const [selectedItem, setSelectedItem] = useState<Option | null>(null);
+  const [isSelected, setIsSelected] = useState(true);
+
+  const options: Option[] = [
     {
-      value: 0,
+      value: true,
       label: 'Celsius'
     },
     {
-      value: 1,
+      value: false,
       label: 'Fahrenheit'
     }
   ]
+  useEffect(() => {
+    setSelectedItem(options[0]);
+  }, [])
+  const calculate = () => {
+    const out = selectedItem?.value? input * 9 / 5 + 32 : (input - 32) * 5 / 9;
+    setOutput(out);
+  }
+  const handleCalculate = (item: Option | null) => {
+    setSelectedItem(item);
+    calculate();
+  }
+  const anotherItem = options.find(item => item.value !== selectedItem?.value);
   return (
     <main className="flex min-h-screen justify-center items-center p-24">
       <div
@@ -38,6 +57,7 @@ export default function Home() {
           value={input}
           onChange={(e) => {
             setInput(Number(e.target.value));
+            calculate();
           }} 
           className="
           border
@@ -49,11 +69,21 @@ export default function Home() {
         />
         <Select 
           options={options}
+          value={isSelected ? selectedItem : anotherItem}
+          onChange={(item: Option | null) => {
+            handleCalculate(item);
+            setIsSelected(true);
+          }}
           className='mt-10' 
         />
         <Select 
           options={options}
-          className='mt-5' 
+          value={!isSelected ? selectedItem : anotherItem}
+          className='mt-5'
+          onChange={(item: Option | null) => {
+            handleCalculate(item);
+            setIsSelected(false);
+          }}
         />
         <div
           className="
